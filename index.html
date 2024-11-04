@@ -3,27 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игра: Угадай карту и кубик</title>
     <link rel="stylesheet" href="style.css">
+    <title>Игра с демоном</title>
 </head>
 <body>
     <div class="game-container">
-        <h1>Игра: Угадай карту и кубик</h1>
-        <h2>Ваша карта:</h2>
-        <div id="card">?</div>
+        <h1>Игра с демоном</h1>
+        <div id="score">Очки: <span id="scoreValue">0</span></div>
+        <div id="attempts">Попытки: <span id="attemptsValue">10</span></div>
+        <div id="drawnCard">Вытянутая карта: <span id="cardValue">-</span></div>
+        <div id="rolledDice">Брошенный кубик: <span id="diceValue">-</span></div>
         <button id="drawCard">Вытянуть карту</button>
-        <h2>Результат кубика:</h2>
-        <div id="dice">?</div>
-        <button id="rollDice" disabled>Бросить кубик</button>
-        <button id="rerollDice" disabled>Перекинуть</button>
-        <p id="rerollAttempts">Осталось попыток перекинуть: 10</p>
-        <p id="timer">Осталось времени: 999 секунд</p>
-        <p id="score">Очки: 0</p>
-        <p id="level">Уровень: 1</p>
-        <p id="message"></p>
+        <button id="rollDice">Бросить кубик</button>
     </div>
-
-    <script src="Game.js"></script>
-    <script src="skript.js"></script>
+    <script src="JS/Game.js"></script>
 </body>
 </html>
