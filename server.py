@@ -3,6 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 
+# Функция для инициализации базы данных
 def init_db():
     conn = sqlite3.connect('progress.db')
     cursor = conn.cursor()
