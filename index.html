@@ -4,77 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Игра: Угадай карту и кубик</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: black;
-            background-image: url('./background.png');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .game-container {
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 40px;
-            border-radius: 10px;
-            color: white;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        h1, h2 {
-            color: white;
-        }
-
-        button {
-            background-color: #444;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
-            font-size: 1.5em;
-        }
-
-        button:hover {
-            background-color: #666;
-        }
-
-        button:disabled {
-            background-color: grey;
-        }
-
-        #card, #dice {
-            font-size: 5em;
-            color: #00FF00;
-        }
-
-        #timer, #score, #level {
-            color: white;
-        }
-
-        #message {
-            color: yellow;
-        }
-
-        #rerollAttempts {
-            color: white;
-            font-size: 1.5em;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
