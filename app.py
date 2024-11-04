@@ -64,3 +64,4 @@ def end_game(user_id, score, attempts):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
