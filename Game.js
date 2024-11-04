@@ -1,16 +1,19 @@
-let currentLevel = 1;  // Уровень игрока
-const userId = 'user123';  // Замените на реальный идентификатор пользователя
+let currentLevel = 1; // Уровень игрока
+const userId = 'user123'; // Уникальный идентификатор пользователя
+let score = 0; // Очки игрока
+let rerollAttempts = 10; // Количество попыток перекинуть кубик
 
 // Функция для сохранения прогресса
-function saveProgress(userId, level) {
-    fetch('http://127.0.0.1:5000/save_progress', {  // Используйте локальный сервер
+function saveProgress(userId, level, score) {
+    fetch('http://127.0.0.1:5000/save_progress', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             user_id: userId,
-            level: level
+            level: level,
+            score: score
         }),
     })
     .then(response => {
@@ -37,7 +40,7 @@ function getProgress(userId) {
             return response.json();
         })
         .then(data => {
-            currentLevel = data.level;  // Обновляем уровень игрока
+            currentLevel = data.level; // Обновляем уровень игрока
             document.getElementById('level').innerText = `Уровень: ${currentLevel}`;
         })
         .catch((error) => {
@@ -50,8 +53,41 @@ window.onload = function() {
     getProgress(userId);
 };
 
-// Пример функции для завершения игры
-function endGame() {
-    saveProgress(userId, currentLevel);
-    // Дополнительный код для завершения игры
-}
+// Основная логика игры
+document.getElementById('drawCard').addEventListener('click', function() {
+    // Логика для вытаскивания карты
+    const cards = ['2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠', 'A♠'];
+    const randomCard = cards[Math.floor(Math.random() * cards.length)];
+    document.getElementById('card').innerText = `Карта: ${randomCard}`;
+    
+    // Разблокируем кнопку броска кубика
+    document.getElementById('rollDice').disabled = false;
+});
+
+document.getElementById('rollDice').addEventListener('click', function() {
+    // Логика для броска кубика
+    const diceResult = Math.floor(Math.random() * 6) + 1; // Генерация результата кубика
+    document.getElementById('dice').innerText = `Кубик: ${diceResult}`; // Обновление результата кубика
+    score += diceResult; // Увеличиваем очки на результат кубика
+    currentLevel++; // Увеличиваем уровень
+    document.getElementById('score').innerText = `Очки: ${score}`; // Обновляем очки на экране
+    document.getElementById('level').innerText = `Уровень: ${currentLevel}`; // Обновляем уровень на экране
+    saveProgress(userId, currentLevel, score); // Сохраняем прогресс
+    document.getElementById('rerollDice').disabled = false; // Разблокируем кнопку перекидывания
+});
+
+document.getElementById('rerollDice').addEventListener('click', function() {
+    if (rerollAttempts > 0) {
+        rerollAttempts--; // Уменьшаем количество попыток
+        document.getElementById('rerollAttempts').innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
+        
+        // Логика для повторного броска кубика
+        const diceResult = Math.floor(Math.random() * 6) + 1; // Генерация нового результата кубика
+        document.getElementById('dice').innerText = `Кубик: ${diceResult}`; // Обновление результата кубика
+        score += diceResult; // Увеличиваем очки
+        document.getElementById('score').innerText = `Очки: ${score}`; // Обновляем очки на экране
+        saveProgress(userId, currentLevel, score); // Сохраняем прогресс
+    } else {
+        alert("У вас закончились попытки перекинуть кубик!");
+    }
+});
