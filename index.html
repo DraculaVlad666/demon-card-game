@@ -4,7 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Игра: Угадай карту и кубик</title>
-    <link rel="stylesheet" href="style.css"> <!-- Подключаем CSS -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black; /* Тестовый фон */
+            background-image: url('./ПИКИЧ/background.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон */
+            padding: 40px;
+            border-radius: 10px;
+            color: white; /* Белый текст */
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1, h2 {
+            color: white; /* Белый текст */
+        }
+
+        button {
+            background-color: #444;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1.5em;
+        }
+
+        button:hover {
+            background-color: #666;
+        }
+
+        button:disabled {
+            background-color: grey;
+        }
+
+        #card, #dice {
+            font-size: 5em;
+            color: #00FF00; /* Зеленый текст для карты и кубика */
+        }
+
+        #timer, #score, #level {
+            color: white; /* Белый цвет для текста */
+        }
+
+        #message {
+            color: yellow; /* Жёлтый текст для сообщений */
+        }
+
+        #rerollAttempts {
+            color: white; /* Белый цвет для оставшихся попыток */
+            font-size: 1.5em; /* Увеличенный шрифт */
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
@@ -23,7 +93,6 @@
         <p id="message"></p>
     </div>
 
-    <script src="Game.js"></script>
-    <script src="skript.js"></script> <!-- Обратите внимание на порядок подключения -->
+    <script src="game.js"></script>
 </body>
 </html>
