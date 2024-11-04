@@ -1,104 +1,48 @@
-// game.js
+let currentLevel = 1;  // Уровень игрока
+const userId = 'USER_ID';  // Замените на реальный идентификатор пользователя
 
-let score = 0;
-let level = 1;
-let timeLeft = 999; // Установим время на 999 секунд
-let timerId;
-let rollAttempts; // Объявляем переменную для попыток
-
-const cardElement = document.getElementById('card');
-const diceElement = document.getElementById('dice');
-const scoreElement = document.getElementById('score');
-const levelElement = document.getElementById('level');
-const timerElement = document.getElementById('timer');
-const messageElement = document.getElementById('message');
-const rerollButton = document.getElementById('rerollDice');
-const rollDiceButton = document.getElementById('rollDice');
-const rerollAttemptsElement = document.getElementById('rerollAttempts');
-
-document.getElementById('drawCard').addEventListener('click', drawCard);
-rollDiceButton.addEventListener('click', rollDice);
-rerollButton.addEventListener('click', rerollDice);
-
-function drawCard() {
-    const cardValue = Math.floor(Math.random() * 6) + 1; // Случайное число от 1 до 6
-    cardElement.textContent = cardValue; // Отображение значения карты
-    rollAttempts = 10; // Сброс попыток при вытягивании новой карты
-    updateRerollAttempts(); // Обновляем отображение оставшихся попыток
-    rerollButton.disabled = false; // Активируем кнопку перекидывания
-    rollDiceButton.disabled = false; // Активируем кнопку броска кубика
-    startTimer();
+// Функция для сохранения прогресса
+function saveProgress(userId, level) {
+    fetch('https://your-server-url/save_progress', {  // Укажите ваш URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            user_id: userId,
+            level: level
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Прогресс сохранен:', data);
+    })
+    .catch((error) => {
+        console.error('Ошибка при сохранении прогресса:', error);
+    });
 }
 
-function rollDice() {
-    const diceValue = Math.floor(Math.random() * 6) + 1; // Случайное число от 1 до 6
-    diceElement.textContent = diceValue; // Отображение значения кубика
-
-    // Проверка на совпадение
-    if (parseInt(cardElement.textContent) === diceValue) {
-        score++; // Увеличиваем счет
-        messageElement.textContent = "Поздравляем! Вы угадали!";
-        updateScore(); // Обновляем очки
-    } else {
-        messageElement.textContent = "Попробуйте снова!";
-    }
-
-    rollDiceButton.disabled = true; // Отключаем кнопку броска кубика после использования
+// Функция для получения прогресса
+function getProgress(userId) {
+    fetch(`https://your-server-url/get_progress/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            currentLevel = data.level;  // Обновляем уровень игрока
+            document.getElementById('level').innerText = `Уровень: ${currentLevel}`;
+            // Дополнительный код для настройки игры на основе уровня
+        })
+        .catch((error) => {
+            console.error('Ошибка при получении прогресса:', error);
+        });
 }
 
-function rerollDice() {
-    if (rollAttempts > 0) {
-        const diceValue = Math.floor(Math.random() * 6) + 1; // Случайное число от 1 до 6
-        diceElement.textContent = diceValue; // Отображение нового значения кубика
+// Вызов функции получения прогресса при загрузке игры
+window.onload = function() {
+    getProgress(userId);
+};
 
-        // Проверка на совпадение
-        if (parseInt(cardElement.textContent) === diceValue) {
-            score++; // Увеличиваем счет
-            messageElement.textContent = "Поздравляем! Вы угадали!";
-            updateScore(); // Обновляем очки
-        } else {
-            messageElement.textContent = "Попробуйте снова!";
-        }
-
-        rollAttempts--;
-        updateRerollAttempts(); // Обновление отображения оставшихся попыток
-
-        // Если попытки закончились, отключаем кнопку
-        if (rollAttempts <= 0) {
-            rerollButton.disabled = true;
-        }
-    }
-}
-
-function updateRerollAttempts() {
-    rerollAttemptsElement.textContent = `Осталось попыток перекинуть: ${rollAttempts}`;
-}
-
-function updateScore() {
-    scoreElement.textContent = `Очки: ${score}`;
-    if (score >= 3) {
-        level++;
-        score = 0; // Сброс очков на новом уровне
-        levelElement.textContent = `Уровень: ${level}`;
-        rollAttempts = 10; // Сброс попыток на новом уровне
-        updateRerollAttempts(); // Обновление отображения попыток
-    }
-}
-
-function startTimer() {
-    clearInterval(timerId); // Очистка предыдущего таймера
-    timeLeft = 999; // Сброс таймера на 999 секунд
-    timerElement.textContent = `Осталось времени: ${timeLeft} секунд`;
-
-    timerId = setInterval(() => {
-        timeLeft--;
-        timerElement.textContent = `Осталось времени: ${timeLeft} секунд`;
-
-        if (timeLeft <= 0) {
-            clearInterval(timerId);
-            messageElement.textContent = "Время вышло!";
-            rerollButton.disabled = true; // Отключаем кнопку, если время вышло
-            rollDiceButton.disabled = true; // Отключаем кнопку броска кубика, если время вышло
-        }
-    }, 1000);
+// Пример функции для завершения игры
+function endGame() {
+    saveProgress(userId, currentLevel);
+    // Дополнительный код для завершения игры
 }
