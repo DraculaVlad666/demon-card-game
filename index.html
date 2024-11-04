@@ -19,24 +19,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black; /* Тестовый фон */
-            background-image: url('./background.png'); /* Исправленный путь */
+            background-color: black;
+            background-image: url('./background.png');
             background-size: cover;
             background-position: center;
         }
 
         .game-container {
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон */
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 40px;
             border-radius: 10px;
-            color: white; /* Белый текст */
+            color: white;
             width: 100%;
             max-width: 600px;
         }
 
         h1, h2 {
-            color: white; /* Белый текст */
+            color: white;
         }
 
         button {
@@ -59,20 +59,20 @@
 
         #card, #dice {
             font-size: 5em;
-            color: #00FF00; /* Зеленый текст для карты и кубика */
+            color: #00FF00;
         }
 
         #timer, #score, #level {
-            color: white; /* Белый цвет для текста */
+            color: white;
         }
 
         #message {
-            color: yellow; /* Жёлтый текст для сообщений */
+            color: yellow;
         }
 
         #rerollAttempts {
-            color: white; /* Белый цвет для оставшихся попыток */
-            font-size: 1.5em; /* Увеличенный шрифт */
+            color: white;
+            font-size: 1.5em;
         }
     </style>
 </head>
@@ -84,16 +84,16 @@
         <button id="drawCard">Вытянуть карту</button>
         <h2>Результат кубика:</h2>
         <div id="dice">?</div>
-        <button id="rollDice" disabled>Бросить кубик</button> <!-- Кнопка изначально отключена -->
-        <button id="rerollDice" disabled>Перекинуть</button> <!-- Новая кнопка -->
-        <p id="rerollAttempts">Осталось попыток перекинуть: 10</p> <!-- Отображение попыток -->
+        <button id="rollDice" disabled>Бросить кубик</button>
+        <button id="rerollDice" disabled>Перекинуть</button>
+        <p id="rerollAttempts">Осталось попыток перекинуть: 10</p>
         <p id="timer">Осталось времени: 999 секунд</p>
         <p id="score">Очки: 0</p>
         <p id="level">Уровень: 1</p>
         <p id="message"></p>
     </div>
 
-    <script src="Game.js"></script> <!-- Подключение JavaScript -->
-    <script src="skript.js"></script> <!-- Подключение второго JavaScript -->
+    <script src="Game.js"></script>
+    <script src="skript.js"></script>
 </body>
 </html>
