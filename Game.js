@@ -41,7 +41,9 @@ function getProgress(userId) {
         })
         .then(data => {
             currentLevel = data.level; // Обновляем уровень игрока
+            score = data.score; // Обновляем очки
             document.getElementById('level').innerText = `Уровень: ${currentLevel}`;
+            document.getElementById('score').innerText = `Очки: ${score}`;
         })
         .catch((error) => {
             console.error('Ошибка при получении прогресса:', error);
@@ -58,16 +60,14 @@ document.getElementById('drawCard').addEventListener('click', function() {
     // Логика для вытаскивания карты
     const cards = ['2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠', 'A♠'];
     const randomCard = cards[Math.floor(Math.random() * cards.length)];
-    document.getElementById('card').innerText = `Карта: ${randomCard}`;
-    
-    // Разблокируем кнопку броска кубика
-    document.getElementById('rollDice').disabled = false;
+    document.getElementById('card').innerText = randomCard; // Обновление текста карты
+    document.getElementById('rollDice').disabled = false; // Разблокируем кнопку броска кубика
 });
 
 document.getElementById('rollDice').addEventListener('click', function() {
     // Логика для броска кубика
     const diceResult = Math.floor(Math.random() * 6) + 1; // Генерация результата кубика
-    document.getElementById('dice').innerText = `Кубик: ${diceResult}`; // Обновление результата кубика
+    document.getElementById('dice').innerText = diceResult; // Обновление результата кубика
     score += diceResult; // Увеличиваем очки на результат кубика
     currentLevel++; // Увеличиваем уровень
     document.getElementById('score').innerText = `Очки: ${score}`; // Обновляем очки на экране
@@ -83,7 +83,7 @@ document.getElementById('rerollDice').addEventListener('click', function() {
         
         // Логика для повторного броска кубика
         const diceResult = Math.floor(Math.random() * 6) + 1; // Генерация нового результата кубика
-        document.getElementById('dice').innerText = `Кубик: ${diceResult}`; // Обновление результата кубика
+        document.getElementById('dice').innerText = diceResult; // Обновление результата кубика
         score += diceResult; // Увеличиваем очки
         document.getElementById('score').innerText = `Очки: ${score}`; // Обновляем очки на экране
         saveProgress(userId, currentLevel, score); // Сохраняем прогресс
