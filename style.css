@@ -1,11 +1,11 @@
 * {
-    box-sizing: border-box; /* Обеспечивает, что padding и border учитываются в ширине и высоте элементов */
+    box-sizing: border-box;
 }
 
 html, body {
-    height: 100%; /* Устанавливает высоту на 100% для html и body */
-    margin: 0; /* Убирает отступы у body */
-    font-family: Arial, sans-serif; /* Шрифт для всей страницы */
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -13,58 +13,57 @@ body {
     justify-content: center;
     align-items: center;
     background-color: black; /* Фоновый цвет, если картинка не загрузится */
-    background-image: url('/ПИКИЧ/background.png'); /* Путь к изображению фона */
+    background-image: url('./background.png'); /* Путь к изображению фона */
     background-size: cover;
     background-position: center;
 }
 
-
 .game-container {
-    text-align: center; /* Центрирует текст внутри контейнера */
-    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон для контейнера */
-    padding: 40px; /* Отступы внутри контейнера */
-    border-radius: 10px; /* Закругление углов */
-    color: white; /* Цвет текста */
-    width: 100%; /* Ширина контейнера */
-    max-width: 600px; /* Максимальная ширина контейнера */
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+    color: white;
+    width: 100%;
+    max-width: 600px;
 }
 
 h1, h2 {
-    color: white; /* Цвет заголовков */
+    color: white;
 }
 
 button {
-    background-color: #444; /* Фоновый цвет кнопок */
-    color: white; /* Цвет текста кнопок */
-    padding: 15px 30px; /* Внутренние отступы кнопок */
-    border-radius: 5px; /* Закругление углов кнопок */
-    cursor: pointer; /* Указатель курсора при наведении */
-    margin: 10px; /* Отступы между кнопками */
-    font-size: 1.5em; /* Размер шрифта кнопок */
+    background-color: #444;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    font-size: 1.5em;
 }
 
 button:hover {
-    background-color: #666; /* Изменение фона кнопок при наведении */
+    background-color: #666;
 }
 
 button:disabled {
-    background-color: grey; /* Цвет кнопок, если они отключены */
+    background-color: grey;
 }
 
 #card, #dice {
-    font-size: 5em; /* Размер шрифта для карты и кубика */
-    color: #00FF00; /* Зеленый текст для карты и кубика */
+    font-size: 5em;
+    color: #00FF00;
 }
 
 #timer, #score, #level {
-    color: white; /* Цвет текста для таймера, очков и уровня */
+    color: white;
 }
 
 #message {
-    color: yellow; /* Цвет для сообщений */
+    color: yellow;
 }
 
 #rerollAttempts {
-    color: white; /* Цвет текста для оставшихся попыток */
-    font-size: 1.5em; /* Увеличенный шрифт для оставшихся попыток */
+    color: white;
+    font-size: 1.5em;
 }
