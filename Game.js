@@ -15,7 +15,7 @@ function saveProgress(userId, level) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Сетевая ошибка'); // Обрабатываем сетевые ошибки
+            throw new Error('Сетевая ошибка');
         }
         return response.json();
     })
@@ -32,7 +32,7 @@ function getProgress(userId) {
     fetch(`http://127.0.0.1:5000/get_progress/${userId}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Сетевая ошибка'); // Обрабатываем сетевые ошибки
+                throw new Error('Сетевая ошибка');
             }
             return response.json();
         })
@@ -48,17 +48,21 @@ function getProgress(userId) {
 // Обработчики событий для кнопок
 document.getElementById('drawCard').addEventListener('click', function() {
     console.log('Карта вытянута');
+    document.getElementById('card').innerText = '♥';  // Здесь вы можете установить значение карты
     document.getElementById('rollDice').disabled = false; // Разблокируем кнопку броска кубика
 });
 
 document.getElementById('rollDice').addEventListener('click', function() {
     console.log('Кубик брошен');
-    // Добавьте логику для броска кубика здесь
+    const diceResult = Math.floor(Math.random() * 6) + 1;  // Бросок кубика (1-6)
+    document.getElementById('dice').innerText = diceResult;  // Показываем результат
+    document.getElementById('rerollDice').disabled = false; // Разблокируем кнопку перекидывания
 });
 
 document.getElementById('rerollDice').addEventListener('click', function() {
     console.log('Кубик перекинут');
-    // Добавьте логику для перекидывания здесь
+    const rerollResult = Math.floor(Math.random() * 6) + 1;  // Перекидывание кубика
+    document.getElementById('dice').innerText = rerollResult;  // Показываем новый результат
 });
 
 // Вызов функции получения прогресса при загрузке игры
