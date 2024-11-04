@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра: Угадай карту и кубик</title>
+    <link rel="stylesheet" href="/style.css"> <!-- Путь к CSS файлу -->
+</head>
+<body>
+    <div class="game-container">
+        <h1>Игра: Угадай карту и кубик</h1>
+        <h2>Ваша карта:</h2>
+        <div id="card">?</div>
+        <button id="drawCard">Вытянуть карту</button>
+        <h2>Результат кубика:</h2>
+        <div id="dice">?</div>
+        <button id="rollDice" disabled>Бросить кубик</button>
+        <button id="rerollDice" disabled>Перекинуть</button>
+        <p id="rerollAttempts">Осталось попыток перекинуть: 10</p>
+        <p id="timer">Осталось времени: 999 секунд</p>
+        <p id="score">Очки: 0</p>
+        <p id="level">Уровень: 1</p>
+        <p id="message"></p>
+    </div>
+
+    <script src="/JS/Game.js"></script> <!-- Путь к JS файлу -->
+    <script src="/JS/skript.js"></script> <!-- Путь к JS файлу -->
+</body>
+</html>
