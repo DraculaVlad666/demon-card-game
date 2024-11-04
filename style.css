@@ -1,8 +1,3 @@
-body {
-    background-color: red; /* Яркий цвет для проверки */
-}
-
-background-color: red;
 * {
     box-sizing: border-box;
 }
@@ -17,27 +12,24 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black; /* Чёрный фон на случай, если изображение не загрузится */
-    
-    /* Используем относительный путь к изображению */
-    background-image: url('ПИКИЧ/background.png'); 
-    
-    background-size: cover; /* Растягиваем изображение */
-    background-position: center; /* Центрируем изображение */
+    background-color: black;
+    background-image: url('background.png'); /* Путь к фону */
+    background-size: cover;
+    background-position: center;
 }
 
 .game-container {
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный чёрный фон для текста */
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 40px;
     border-radius: 10px;
-    color: white; /* Белый текст */
+    color: white;
     width: 100%;
     max-width: 600px;
 }
 
 h1, h2 {
-    color: white; /* Белый текст */
+    color: white;
 }
 
 button {
@@ -60,13 +52,18 @@ button:disabled {
 
 #card, #dice {
     font-size: 5em;
-    color: #00FF00; /* Зелёный текст для карты и кубика */
+    color: #00FF00;
 }
 
 #timer, #score, #level {
-    color: white; /* Белый цвет для текста */
+    color: white;
 }
 
 #message {
-    color: yellow; /* Жёлтый текст для сообщений */
+    color: yellow;
+}
+
+#rerollAttempts {
+    color: white;
+    font-size: 1.5em;
 }
