@@ -1,44 +1,66 @@
 let score = 0;
-let level = 1;
-let rerollAttempts = 10;
+let attempts = 10;
+let userId = 1;  // Здесь вы должны использовать актуальный ID пользователя
 
-document.getElementById('drawCard').addEventListener('click', function() {
-    const cardValue = Math.floor(Math.random() * 6) + 1; // Случайное число от 1 до 6
-    document.getElementById('card').innerText = cardValue;
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Загрузка прогресса при загрузке страницы
+    fetch(`/start_game/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            score = data.score;
+            attempts = data.attempts;
+            updateUI();
+        });
 
-    // Разблокируем кнопку броска кубика
-    document.getElementById('rollDice').disabled = false;
+    document.getElementById('drawCard').onclick = function() {
+        fetch('/draw_card', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                let drawnCard = data.card;
+                document.getElementById('cardValue').innerText = drawnCard;
+                updateScore(drawnCard);
+            });
+    };
+
+    document.getElementById('rollDice').onclick = function() {
+        fetch('/roll_dice', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                let diceValue = data.dice;
+                document.getElementById('diceValue').innerText = diceValue;
+            });
+    };
 });
 
-document.getElementById('rollDice').addEventListener('click', function() {
-    const diceValue = Math.floor(Math.random() * 6) + 1; // Случайное число от 1 до 6
-    document.getElementById('dice').innerText = diceValue;
-
-    if (document.getElementById('card').innerText != '?') {
-        if (parseInt(document.getElementById('card').innerText) === diceValue) {
-            score++;
-            document.getElementById('score').innerText = `Очки: ${score}`;
-            if (score >= 3) {
-                level++;
-                score = 0; // Сбросить очки
-                rerollAttempts += 10; // Добавить 10 попыток
-                document.getElementById('rerollAttempts').innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
-                document.getElementById('level').innerText = `Уровень: ${level}`;
-                alert(`Поздравляем! Вы достигли уровня ${level}`);
-            }
-        }
+function updateScore(drawnCard) {
+    let diceValue = parseInt(document.getElementById('diceValue').innerText);
+    if (drawnCard === diceValue) {
+        score += 1;
+        attempts -= 1;  // Уменьшаем количество попыток на 1
     }
-    // Блокируем кнопку броска кубика
-    document.getElementById('rollDice').disabled = true;
-    // Блокируем кнопку перекинуть, если попытки закончились
-    document.getElementById('rerollDice').disabled = rerollAttempts <= 0;
-});
 
-document.getElementById('rerollDice').addEventListener('click', function() {
-    if (rerollAttempts > 0) {
-        rerollAttempts--;
-        document.getElementById('rerollAttempts').innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
-        // Бросаем кубик заново
-        document.getElementById('rollDice').click(); // Имитация клика
+    if (score >= 3) {
+        // Переход на новый раунд
+        alert("Поздравляем! Вы переходите в следующий раунд!");
+        score = 0;  // Сбросить очки для следующего раунда
+        attempts += 10;  // Дать 10 новых попыток
     }
-});
+
+    saveProgress();
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById('scoreValue').innerText = score;
+    document.getElementById('attemptsValue').innerText = attempts;
+
+    if (attempts <= 0) {
+        alert("Игра окончена! Вы не имеете попыток.");
+        saveProgress();
+        // Здесь можно перезагрузить игру или завершить
+    }
+}
+
+function saveProgress() {
+    fetch(`/end_game/${userId}/${score}/${attempts}`, { method: 'POST' });
+}
