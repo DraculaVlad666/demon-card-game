@@ -1,0 +1,72 @@
+body {
+    background-color: red; /* Яркий цвет для проверки */
+}
+
+background-color: red;
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black; /* Чёрный фон на случай, если изображение не загрузится */
+    
+    /* Используем относительный путь к изображению */
+    background-image: url('ПИКИЧ/background.png'); 
+    
+    background-size: cover; /* Растягиваем изображение */
+    background-position: center; /* Центрируем изображение */
+}
+
+.game-container {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный чёрный фон для текста */
+    padding: 40px;
+    border-radius: 10px;
+    color: white; /* Белый текст */
+    width: 100%;
+    max-width: 600px;
+}
+
+h1, h2 {
+    color: white; /* Белый текст */
+}
+
+button {
+    background-color: #444;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    font-size: 1.5em;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+button:disabled {
+    background-color: grey;
+}
+
+#card, #dice {
+    font-size: 5em;
+    color: #00FF00; /* Зелёный текст для карты и кубика */
+}
+
+#timer, #score, #level {
+    color: white; /* Белый цвет для текста */
+}
+
+#message {
+    color: yellow; /* Жёлтый текст для сообщений */
+}
