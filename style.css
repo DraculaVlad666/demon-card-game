@@ -1,40 +1,21 @@
 body {
     background-image: url('background.png');
     background-size: cover;
-    color: white;
     font-family: Arial, sans-serif;
+    color: white;
     text-align: center;
-    margin: 0;
-    height: 100vh; /* Высота на всю страницу */
-    display: flex; /* Используем flexbox для центрирования */
-    align-items: center; /* Центрируем по вертикали */
-    justify-content: center; /* Центрируем по горизонтали */
 }
 
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрируем элементы внутри контейнера */
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.7); /* Темный полупрозрачный фон для контейнера */
+.container {
+    margin: auto;
     padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    width: 300px; /* Ширина контейнера */
+    width: 300px;
 }
 
 button {
     margin: 10px;
-    padding: 10px 20px;
+    padding: 10px;
     font-size: 16px;
-    cursor: pointer;
-    background-color: #ff5733; /* Цвет кнопки */
-    border: none;
-    border-radius: 5px;
-    color: white;
-    transition: background-color 0.3s; /* Плавный переход цвета */
-}
-
-button:hover {
-    background-color: #c70039; /* Цвет кнопки при наведении */
 }
