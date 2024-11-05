@@ -4,6 +4,10 @@ let rerollAttempts = 10; // Максимальное количество поп
 let cardValue = 0; // Хранит значение вытянутой карты
 let diceValue = 0; // Хранит значение кубика
 
+// Получите user_id из URL, если это возможно
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('user_id') || "user123"; // Уникальный идентификатор пользователя
+
 document.getElementById('drawCard').addEventListener('click', drawCard);
 document.getElementById('rollDice').addEventListener('click', rollDice);
 document.getElementById('rerollDice').addEventListener('click', rerollDice);
@@ -87,8 +91,7 @@ window.addEventListener('beforeunload', function (event) {
 
 // Функция для сохранения прогресса
 function saveProgress() {
-    const userId = "user123"; // Уникальный идентификатор пользователя
-    const data = { user_id: userId, level: level, score: score }; // Добавляем счет в данные
+    const data = { user_id: userId, level: level, score: score }; // Передаем уникальный идентификатор пользователя
 
     fetch('/save_progress', {
         method: 'POST',
@@ -103,7 +106,6 @@ function saveProgress() {
 
 // Функция для получения прогресса при загрузке страницы
 window.onload = function () {
-    const userId = "user123"; // Уникальный идентификатор пользователя
     fetch(`/get_progress/${userId}`)
     .then(response => response.json())
     .then(data => {
