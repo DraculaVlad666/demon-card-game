@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игра в карты с демоном</title>
     <link rel="stylesheet" href="style.css">
+    <title>Игра с демоном</title>
 </head>
 <body>
-    <div class="game-container">
-        <h1>Игра в карты с демоном</h1>
+    <div class="container">
+        <h1>Игра с демоном</h1>
         <div id="score">Очки: 0</div>
         <div id="level">Уровень: 1</div>
         <div id="rerollAttempts">Осталось попыток перекинуть: 10</div>
-        <div id="card">Карточка: </div>
-        <div id="dice">Кубик: </div>
         <button id="drawCard">Вытянуть карту</button>
         <button id="rollDice" disabled>Бросить кубик</button>
         <button id="rerollDice" disabled>Перекинуть кубик</button>
-        <button id="showProgress">Показать прогресс</button>
+        <div id="card">Карта: 0</div>
+        <div id="dice">Кубик: 0</div>
     </div>
-
     <script src="skript.js"></script>
 </body>
 </html>
