@@ -89,6 +89,7 @@ window.addEventListener('beforeunload', function (event) {
 // Функция для сохранения прогресса
 function saveProgress() {
     const data = { user_id: userId, level: level, score: score }; // Передаем уникальный идентификатор пользователя
+    console.log(`Saving progress: userId=${userId}, level=${level}, score=${score}`); // Логируем информацию о сохранении
 
     fetch('/save_progress', {
         method: 'POST',
@@ -97,18 +98,30 @@ function saveProgress() {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => console.log(data));
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => console.log(data))
+    .catch(error => console.error('Error saving progress:', error));
 }
 
 // Функция для получения прогресса при загрузке страницы
 window.onload = function () {
     fetch(`/get_progress/${userId}`)
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         level = data.level;
         score = data.score || 0; // Устанавливаем начальное значение счета
         document.getElementById('level').innerText = `Уровень: ${level}`;
         updateScore(); // Обновляем отображение счета
-    });
+    })
+    .catch(error => console.error('Error loading progress:', error));
 };
