@@ -3,10 +3,7 @@ let level = 1; // Уровень
 let rerollAttempts = 10; // Максимальное количество попыток перекинуть кубик
 let cardValue = 0; // Хранит значение вытянутой карты
 let diceValue = 0; // Хранит значение кубика
-
-// Получите user_id из URL, если это возможно
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('user_id') || "user123"; // Уникальный идентификатор пользователя
+const userId = "user123"; // Уникальный идентификатор пользователя
 
 document.getElementById('drawCard').addEventListener('click', drawCard);
 document.getElementById('rollDice').addEventListener('click', rollDice);
