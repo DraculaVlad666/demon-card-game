@@ -10,7 +10,7 @@ document.getElementById('rerollDice').addEventListener('click', rerollDice);
 
 function drawCard() {
     cardValue = Math.floor(Math.random() * 6) + 1; // Сохраняем значение карты
-    document.getElementById('card').innerText = cardValue;
+    document.getElementById('card').innerText = `Вытянутая карта: ${cardValue}`;
 
     // Активируем кнопку броска кубика
     document.getElementById('rollDice').disabled = false;
@@ -18,7 +18,7 @@ function drawCard() {
 
 function rollDice() {
     diceValue = Math.floor(Math.random() * 6) + 1; // Сохраняем значение кубика
-    document.getElementById('dice').innerText = diceValue;
+    document.getElementById('dice').innerText = `Результат броска: ${diceValue}`;
 
     // Проверяем совпадение значений и добавляем очко
     if (cardValue === diceValue) {
@@ -39,7 +39,7 @@ function rollDice() {
 function rerollDice() {
     if (rerollAttempts > 0) {
         diceValue = Math.floor(Math.random() * 6) + 1; // Новое значение кубика
-        document.getElementById('dice').innerText = diceValue;
+        document.getElementById('dice').innerText = `Результат перекидывания: ${diceValue}`;
         rerollAttempts--;
         document.getElementById('rerollAttempts').innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
 
@@ -113,3 +113,4 @@ window.onload = function () {
         updateScore(); // Обновляем отображение счета
     });
 };
+
