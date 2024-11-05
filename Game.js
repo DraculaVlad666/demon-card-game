@@ -1,8 +1,8 @@
-let score = 0;
-let level = 1;
-let rerollAttempts = 10;
-let cardValue = 0;
-let diceValue = 0;
+let score = 0; // Текущий счет
+let level = 1; // Уровень
+let rerollAttempts = 10; // Максимальное количество попыток перекинуть кубик
+let cardValue = 0; // Хранит значение вытянутой карты
+let diceValue = 0; // Хранит значение кубика
 
 document.getElementById('drawCard').addEventListener('click', drawCard);
 document.getElementById('rollDice').addEventListener('click', rollDice);
@@ -17,13 +17,16 @@ function drawCard() {
 function rollDice() {
     diceValue = Math.floor(Math.random() * 6) + 1;
     document.getElementById('dice').innerText = diceValue;
+
     if (cardValue === diceValue) {
         score += 1;
         updateScore();
+
         if (score === 3) {
             levelUp();
         }
     }
+
     document.getElementById('rollDice').disabled = true;
     document.getElementById('rerollDice').disabled = false;
 }
@@ -38,6 +41,7 @@ function rerollDice() {
         if (cardValue === diceValue) {
             score += 1;
             updateScore();
+
             if (score === 3) {
                 levelUp();
             }
@@ -69,6 +73,7 @@ window.addEventListener('beforeunload', function () {
 function saveProgress() {
     const userId = "user123";
     const data = { user_id: userId, level: level, score: score };
+
     fetch('/save_progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
