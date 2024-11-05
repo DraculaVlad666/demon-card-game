@@ -81,6 +81,17 @@ function levelUp() {
     updateScore(); // Обновляем отображение счета
 }
 
+// Функция для показа прогресса
+function showProgress() {
+    saveProgress();
+    const userId = "user123"; // Уникальный идентификатор пользователя
+    fetch(`/get_progress/${userId}`)
+    .then(response => response.json())
+    .then(data => {
+        alert(`Уровень: ${data.level}, Очки: ${data.score}`);
+    });
+}
+
 // Сохранение прогресса при уходе со страницы
 window.addEventListener('beforeunload', function (event) {
     saveProgress();
@@ -114,13 +125,3 @@ window.onload = function () {
         updateScore(); // Обновляем отображение счета
     });
 };
-
-// Функция для показа прогресса
-function showProgress() {
-    const userId = "user123"; // Уникальный идентификатор пользователя
-    fetch(`/get_progress/${userId}`)
-    .then(response => response.json())
-    .then(data => {
-        alert(`Уровень: ${data.level}, Очки: ${data.score}`);
-    });
-}
