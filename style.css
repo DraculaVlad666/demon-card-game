@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-image: url('background.png'); /* Используйте ваш фон */
+    background-image: url('background.png'); /* Убедитесь, что файл background.png существует */
     background-size: cover;
     color: white;
 }
