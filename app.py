@@ -4,21 +4,20 @@ import os
 
 app = Flask(__name__)
 
-# Маршрут для рендера главной страницы
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Функция для работы с базой данных
-def save_to_db(data):
+# Функции для работы с базой данных
+def save_to_db(score):
     conn = sqlite3.connect('game_progress.db')
     cursor = conn.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS progress (id INTEGER PRIMARY KEY, score INTEGER)')
-    cursor.execute('INSERT INTO progress (score) VALUES (?)', (data,))
+    cursor.execute('INSERT INTO progress (score) VALUES (?)', (score,))
     conn.commit()
     conn.close()
 
-def get_score_from_db():
+def get_latest_score():
     conn = sqlite3.connect('game_progress.db')
     cursor = conn.cursor()
     cursor.execute('SELECT score FROM progress ORDER BY id DESC LIMIT 1')
@@ -26,20 +25,19 @@ def get_score_from_db():
     conn.close()
     return row[0] if row else 0
 
-# Маршрут для сохранения прогресса
+# Маршруты для сохранения и загрузки прогресса
 @app.route('/save_progress', methods=['POST'])
 def save_progress():
-    data = request.json.get('score', 0)
-    save_to_db(data)
+    score = request.json.get('score', 0)
+    save_to_db(score)
     return jsonify(success=True)
 
-# Маршрут для получения прогресса
 @app.route('/get_progress', methods=['GET'])
 def get_progress():
-    score = get_score_from_db()
+    score = get_latest_score()
     return jsonify(score=score)
 
-# Настройка маршрутов для статических файлов из корня
+# Обслуживание статических файлов из корня
 @app.route('/<path:filename>')
 def static_files(filename):
     return send_from_directory('.', filename)
