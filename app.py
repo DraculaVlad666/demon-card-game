@@ -1,67 +1,43 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, jsonify, request
 import sqlite3
-import random
+import os
 
 app = Flask(__name__)
 
-# Инициализация базы данных
-def init_db():
-    conn = sqlite3.connect('game_progress.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS progress (
-            user_id INTEGER PRIMARY KEY,
-            score INTEGER,
-            attempts INTEGER
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-init_db()
-
-def save_progress(user_id, score, attempts):
-    conn = sqlite3.connect('game_progress.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO progress (user_id, score, attempts) VALUES (?, ?, ?)
-        ON CONFLICT(user_id) DO UPDATE SET score=?, attempts=?
-    ''', (user_id, score, attempts, score, attempts))
-    conn.commit()
-    conn.close()
-
-def load_progress(user_id):
-    conn = sqlite3.connect('game_progress.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT score, attempts FROM progress WHERE user_id = ?', (user_id,))
-    result = cursor.fetchone()
-    conn.close()
-    return result if result else (0, 10)  # Возвращаем 0 очков и 10 попыток по умолчанию
-
+# Маршрут для рендера основного шаблона
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/start_game/<int:user_id>', methods=['GET'])
-def start_game(user_id):
-    score, attempts = load_progress(user_id)
-    return jsonify({'score': score, 'attempts': attempts})
+# Функция для работы с базой данных
+def save_to_db(data):
+    conn = sqlite3.connect('game_progress.db')
+    cursor = conn.cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS progress (id INTEGER PRIMARY KEY, score INTEGER)')
+    cursor.execute('INSERT INTO progress (score) VALUES (?)', (data,))
+    conn.commit()
+    conn.close()
 
-@app.route('/draw_card', methods=['POST'])
-def draw_card():
-    card = random.randint(1, 6)  # Изменить диапазон карт
-    return jsonify({'card': card})
+def get_score_from_db():
+    conn = sqlite3.connect('game_progress.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT score FROM progress ORDER BY id DESC LIMIT 1')
+    row = cursor.fetchone()
+    conn.close()
+    return row[0] if row else 0
 
-@app.route('/roll_dice', methods=['POST'])
-def roll_dice():
-    dice = random.randint(1, 6)
-    return jsonify({'dice': dice})
+# Маршрут для сохранения прогресса
+@app.route('/save_progress', methods=['POST'])
+def save_progress():
+    data = request.json.get('score', 0)
+    save_to_db(data)
+    return jsonify(success=True)
 
-@app.route('/end_game/<int:user_id>/<int:score>/<int:attempts>', methods=['POST'])
-def end_game(user_id, score, attempts):
-    save_progress(user_id, score, attempts)
-    return jsonify({'status': 'success'})
+# Маршрут для получения прогресса
+@app.route('/get_progress', methods=['GET'])
+def get_progress():
+    score = get_score_from_db()
+    return jsonify(score=score)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
