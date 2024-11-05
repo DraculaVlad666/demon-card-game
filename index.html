@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Игра в карты с демоном</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Игра в карты с демоном</h1>
-    <div>
-        <p id="score">Очки: 0</p>
-        <p id="level">Уровень: 1</p>
-        <button id="drawCard">Вытянуть карту</button>
-        <button id="rollDice" disabled>Бросить кубик</button>
-        <button id="rerollDice" disabled>Перекинуть кубик</button>
-        <p id="card"></p>
-        <p id="dice"></p>
-        <p id="rerollAttempts">Осталось попыток перекинуть: 10</p>
+    <div class="container">
+        <h1>Игра в карты с демоном</h1>
+        <div>
+            <p id="score">Очки: 0</p>
+            <p id="level">Уровень: 1</p>
+            <button id="drawCard">Вытянуть карту</button>
+            <button id="rollDice" disabled>Бросить кубик</button>
+            <button id="rerollDice" disabled>Перекинуть кубик</button>
+            <p id="card"></p>
+            <p id="dice"></p>
+            <p id="rerollAttempts">Осталось попыток перекинуть: 10</p>
+        </div>
     </div>
     <script src="game.js"></script>
 </body>
 </html>
-
