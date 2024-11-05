@@ -2,7 +2,7 @@ let score = 0;
 
 function updateScore(newScore) {
     score = newScore;
-    document.getElementById('score').innerText = "Score: " + score;
+    document.getElementById('score').innerText = "Очки: " + score;
 }
 
 function drawCard() {
@@ -14,10 +14,20 @@ function drawCard() {
         updateScore(score);
         saveProgress(score);
     }
-    return { card: cardNumber, dice: diceNumber };
+    alert(`Карта: ${cardNumber}, Кубик: ${diceNumber}`);
 }
 
-// Функция сохранения прогресса через API
+function rollDice() {
+    const diceNumber = Math.floor(Math.random() * 6) + 1;
+    alert(`Кубик: ${diceNumber}`);
+}
+
+function rerollDice() {
+    const diceNumber = Math.floor(Math.random() * 6) + 1;
+    alert(`Новый бросок кубика: ${diceNumber}`);
+}
+
+// Сохранение прогресса
 function saveProgress(score) {
     fetch('/save_progress', {
         method: 'POST',
@@ -25,19 +35,15 @@ function saveProgress(score) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ score: score })
-    }).then(response => response.json()).then(data => {
-        console.log("Progress saved:", data);
-    }).catch(error => console.error("Error saving progress:", error));
+    }).catch(error => console.error("Ошибка сохранения прогресса:", error));
 }
 
 // Загрузка прогресса при старте игры
 function loadProgress() {
     fetch('/get_progress')
         .then(response => response.json())
-        .then(data => {
-            updateScore(data.score);
-        })
-        .catch(error => console.error("Error loading progress:", error));
+        .then(data => updateScore(data.score))
+        .catch(error => console.error("Ошибка загрузки прогресса:", error));
 }
 
 document.addEventListener('DOMContentLoaded', loadProgress);
