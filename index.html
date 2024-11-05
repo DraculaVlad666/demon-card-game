@@ -7,19 +7,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="game-container">
         <h1>Игра в карты с демоном</h1>
-        <div>
-            <p id="score">Очки: 0</p>
-            <p id="level">Уровень: 1</p>
-            <button id="drawCard">Вытянуть карту</button>
-            <button id="rollDice" disabled>Бросить кубик</button>
-            <button id="rerollDice" disabled>Перекинуть кубик</button>
-            <p id="card"></p>
-            <p id="dice"></p>
-            <p id="rerollAttempts">Осталось попыток перекинуть: 10</p>
-        </div>
+        <div id="score">Очки: 0</div>
+        <div id="level">Уровень: 1</div>
+        <div id="rerollAttempts">Осталось попыток перекинуть: 10</div>
+        <div id="card">Карточка: </div>
+        <div id="dice">Кубик: </div>
+        <button id="drawCard">Вытянуть карту</button>
+        <button id="rollDice" disabled>Бросить кубик</button>
+        <button id="rerollDice" disabled>Перекинуть кубик</button>
+        <button id="showProgress">Показать прогресс</button>
     </div>
-    <script src="game.js"></script>
+
+    <script src="skript.js"></script>
 </body>
 </html>
