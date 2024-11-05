@@ -1,10 +1,10 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_from_directory
 import sqlite3
 import os
 
 app = Flask(__name__)
 
-# Маршрут для рендера основного шаблона
+# Маршрут для рендера главной страницы
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -38,6 +38,11 @@ def save_progress():
 def get_progress():
     score = get_score_from_db()
     return jsonify(score=score)
+
+# Настройка маршрутов для статических файлов из корня
+@app.route('/<path:filename>')
+def static_files(filename):
+    return send_from_directory('.', filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
