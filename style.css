@@ -1,60 +1,16 @@
-* {
-    box-sizing: border-box;
-}
-
-html, body {
-    height: 100%;
+body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background-image: url('background.png'); /* Используйте ваш фон */
+    background-size: cover;
+    color: white;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black; /* Фоновый цвет на случай, если изображение не загрузится */
-    background-image: url('background.png'); /* Путь к изображению фона */
-    background-size: cover; /* Покрытие всего экрана */
-    background-position: center; /* Центрирование изображения */
-}
-
-.game-container {
+.container {
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон для контейнера */
-    padding: 40px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
-    color: white;
-    width: 100%;
-    max-width: 600px;
-}
-
-h1, h2 {
-    color: white;
-}
-
-button {
-    background-color: #444;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px;
-    font-size: 1.5em;
-}
-
-button:hover {
-    background-color: #666;
-}
-
-button:disabled {
-    background-color: grey; /* Цвет для неактивных кнопок */
-}
-
-#card, #dice {
-    font-size: 5em;
-    color: #00FF00;
-}
-
-#timer, #score, #level, #rerollAttempts {
-    color: white;
+    display: inline-block;
+    margin-top: 50px;
 }
