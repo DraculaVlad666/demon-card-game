@@ -1,49 +1,89 @@
 let score = 0;
+let level = 1;
+let rerollAttempts = 10;
+let cardValue = 0;
+let diceValue = 0;
 
-function updateScore(newScore) {
-    score = newScore;
-    document.getElementById('score').innerText = "Очки: " + score;
-}
+document.getElementById('drawCard').addEventListener('click', drawCard);
+document.getElementById('rollDice').addEventListener('click', rollDice);
+document.getElementById('rerollDice').addEventListener('click', rerollDice);
 
 function drawCard() {
-    const cardNumber = Math.floor(Math.random() * 6) + 1;
-    const diceNumber = Math.floor(Math.random() * 6) + 1;
-
-    if (cardNumber === diceNumber) {
-        score += 1;
-        updateScore(score);
-        saveProgress(score);
-    }
-    alert(`Карта: ${cardNumber}, Кубик: ${diceNumber}`);
+    cardValue = Math.floor(Math.random() * 6) + 1;
+    document.getElementById('card').innerText = cardValue;
+    document.getElementById('rollDice').disabled = false;
 }
 
 function rollDice() {
-    const diceNumber = Math.floor(Math.random() * 6) + 1;
-    alert(`Кубик: ${diceNumber}`);
+    diceValue = Math.floor(Math.random() * 6) + 1;
+    document.getElementById('dice').innerText = diceValue;
+    if (cardValue === diceValue) {
+        score += 1;
+        updateScore();
+        if (score === 3) {
+            levelUp();
+        }
+    }
+    document.getElementById('rollDice').disabled = true;
+    document.getElementById('rerollDice').disabled = false;
 }
 
 function rerollDice() {
-    const diceNumber = Math.floor(Math.random() * 6) + 1;
-    alert(`Новый бросок кубика: ${diceNumber}`);
+    if (rerollAttempts > 0) {
+        diceValue = Math.floor(Math.random() * 6) + 1;
+        document.getElementById('dice').innerText = diceValue;
+        rerollAttempts--;
+        document.getElementById('rerollAttempts').innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
+
+        if (cardValue === diceValue) {
+            score += 1;
+            updateScore();
+            if (score === 3) {
+                levelUp();
+            }
+        }
+
+        if (rerollAttempts === 0) {
+            document.getElementById('rerollDice').disabled = true;
+        }
+    }
 }
 
-// Сохранение прогресса
-function saveProgress(score) {
+function updateScore() {
+    document.getElementById('score').innerText = `Очки: ${score}`;
+}
+
+function levelUp() {
+    level += 1;
+    rerollAttempts = 10;
+    document.getElementById('rerollAttempts').innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
+    document.getElementById('level').innerText = `Уровень: ${level}`;
+    score = 0;
+    updateScore();
+}
+
+window.addEventListener('beforeunload', function () {
+    saveProgress();
+});
+
+function saveProgress() {
+    const userId = "user123";
+    const data = { user_id: userId, level: level, score: score };
     fetch('/save_progress', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ score: score })
-    }).catch(error => console.error("Ошибка сохранения прогресса:", error));
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
 }
 
-// Загрузка прогресса при старте игры
-function loadProgress() {
-    fetch('/get_progress')
+window.onload = function () {
+    const userId = "user123";
+    fetch(`/get_progress/${userId}`)
         .then(response => response.json())
-        .then(data => updateScore(data.score))
-        .catch(error => console.error("Ошибка загрузки прогресса:", error));
-}
-
-document.addEventListener('DOMContentLoaded', loadProgress);
+        .then(data => {
+            level = data.level;
+            score = data.score || 0;
+            document.getElementById('level').innerText = `Уровень: ${level}`;
+            updateScore();
+        });
+};
