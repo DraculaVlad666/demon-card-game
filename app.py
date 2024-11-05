@@ -3,10 +3,17 @@ import sqlite3
 
 app = Flask(__name__)
 
+# Функция для инициализации базы данных
 def init_db():
     conn = sqlite3.connect('game_progress.db')
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS progress (user_id TEXT PRIMARY KEY, level INTEGER, score INTEGER)''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS progress (
+            user_id TEXT PRIMARY KEY,
+            level INTEGER,
+            score INTEGER
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -23,7 +30,9 @@ def save_progress():
     
     conn = sqlite3.connect('game_progress.db')
     c = conn.cursor()
-    c.execute('''REPLACE INTO progress (user_id, level, score) VALUES (?, ?, ?)''', (user_id, level, score))
+    c.execute('''
+        REPLACE INTO progress (user_id, level, score) VALUES (?, ?, ?)
+    ''', (user_id, level, score))
     conn.commit()
     conn.close()
     
@@ -33,7 +42,9 @@ def save_progress():
 def get_progress(user_id):
     conn = sqlite3.connect('game_progress.db')
     c = conn.cursor()
-    c.execute('''SELECT level, score FROM progress WHERE user_id = ?''', (user_id,))
+    c.execute('''
+        SELECT level, score FROM progress WHERE user_id = ?
+    ''', (user_id,))
     result = c.fetchone()
     conn.close()
     
