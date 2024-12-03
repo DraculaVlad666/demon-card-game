@@ -28,7 +28,7 @@ rerollDiceButton.addEventListener('click', rerollDice);
 
 // Функция для обновления прогресса на сервере
 function updateProgress() {
-    const data = { user_id: userId, level: level, score: score };
+    const data = { user_id: userId, level: level, score: score, rerollAttempts: rerollAttempts };
 
     // Отправка данных на сервер для сохранения прогресса в базе
     fetch('http://127.0.0.1:5000/update_progress', {
@@ -102,12 +102,16 @@ window.onload = function () {
     fetch(`http://127.0.0.1:5000/get_progress/${userId}`)
     .then(response => response.json())
     .then(data => {
-        level = data.level || 1;
-        score = data.score || 0;
-        rerollAttempts = data.rerollAttempts || 10;
-        levelDisplay.innerText = `Уровень: ${level}`;
-        rerollAttemptsDisplay.innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
-        updateScore();
+        if (data) {
+            level = data.level || 1;
+            score = data.score || 0;
+            rerollAttempts = data.rerollAttempts || 10;
+            levelDisplay.innerText = `Уровень: ${level}`;
+            rerollAttemptsDisplay.innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
+            scoreDisplay.innerText = `Очки: ${score}`;
+        } else {
+            console.error("Ошибка загрузки прогресса:", data);
+        }
     })
     .catch(error => console.error("Ошибка загрузки прогресса:", error));
 };
