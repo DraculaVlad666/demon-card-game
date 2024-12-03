@@ -17,7 +17,7 @@ const rerollAttemptsDisplay = document.getElementById('rerollAttempts');
 // Получение user_id из URL
 function getUserId() {
     const params = new URLSearchParams(window.location.search);
-    return params.get("user_id") || "guest";
+    return params.get("user_id") || "guest";  // Если нет user_id в URL, будет использоваться "guest"
 }
 const userId = getUserId();
 
@@ -53,7 +53,7 @@ function updateProgress() {
 function drawCard() {
     cardValue = Math.floor(Math.random() * 6) + 1;
     cardDisplay.innerText = `Вытянутая карта: ${cardValue}`;
-    rollDiceButton.disabled = false;
+    rollDiceButton.disabled = false;  // Разрешаем бросок кубика
 }
 
 function rollDice() {
@@ -62,10 +62,10 @@ function rollDice() {
     if (cardValue === diceValue) {
         score += 1;
         updateScore();
-        if (score === 3) levelUp();
+        if (score === 3) levelUp();  // Переход на следующий уровень при 3 очках
     }
-    rollDiceButton.disabled = true;
-    rerollDiceButton.disabled = false;
+    rollDiceButton.disabled = true;  // Блокируем кнопку после броска
+    rerollDiceButton.disabled = false;  // Разрешаем перекидывание
 }
 
 function rerollDice() {
@@ -79,13 +79,13 @@ function rerollDice() {
             updateScore();
             if (score === 3) levelUp();
         }
-        if (rerollAttempts === 0) rerollDiceButton.disabled = true;
+        if (rerollAttempts === 0) rerollDiceButton.disabled = true;  // Блокируем кнопку при отсутствии попыток
     }
 }
 
 function updateScore() {
     scoreDisplay.innerText = `Очки: ${score}`;
-    updateProgress();
+    updateProgress();  // Отправляем обновленный прогресс на сервер
 }
 
 function levelUp() {
@@ -97,13 +97,13 @@ function levelUp() {
     updateScore();
 }
 
-// Загрузка прогресса при старте
+// Загрузка прогресса при старте страницы
 window.onload = function () {
     fetch(`http://127.0.0.1:5000/get_progress/${userId}`)
     .then(response => response.json())
     .then(data => {
         if (data) {
-            level = data.level || 1;
+            level = data.level || 1;  // Если на сервере нет данных, устанавливаем значения по умолчанию
             score = data.score || 0;
             rerollAttempts = data.rerollAttempts || 10;
             levelDisplay.innerText = `Уровень: ${level}`;
