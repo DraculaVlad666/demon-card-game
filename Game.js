@@ -30,6 +30,7 @@ rerollDiceButton.addEventListener('click', rerollDice);
 function updateProgress() {
     const data = { user_id: userId, level: level, score: score };
 
+    // Отправка данных на сервер для сохранения прогресса в базе
     fetch('http://127.0.0.1:5000/update_progress', {
         method: 'POST',
         headers: {
