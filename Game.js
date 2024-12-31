@@ -49,7 +49,7 @@ function updateProgress() {
     .catch(error => console.error("Ошибка запроса:", error));
 }
 
-// Логика игры (осталась неизменной, добавлены вызовы updateProgress)
+// Логика игры
 function drawCard() {
     cardValue = Math.floor(Math.random() * 6) + 1;
     cardDisplay.innerText = `Вытянутая карта: ${cardValue}`;
