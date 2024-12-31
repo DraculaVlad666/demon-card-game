@@ -4,6 +4,21 @@ let rerollAttempts = 10; // Максимальное количество поп
 let cardValue = 0; // Хранит значение вытянутой карты
 let diceValue = 0;
 
+// Получение user_id из URL
+function getUserIdFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("user_id");
+}
+
+const userId = getUserIdFromUrl();
+if (!userId) {
+    alert("Ошибка: Не удалось получить идентификатор пользователя.");
+    throw new Error("Не указан user_id.");
+}
+
+// Адрес сервера
+const serverUrl = "http://localhost:5000"; // Замените на адрес вашего сервера
+
 // Элементы интерфейса
 const scoreDisplay = document.getElementById('score');
 const levelDisplay = document.getElementById('level');
@@ -16,6 +31,56 @@ const rerollDiceButton = document.getElementById('rerollDice');
 drawCardButton.addEventListener('click', drawCard);
 rollDiceButton.addEventListener('click', rollDice);
 rerollDiceButton.addEventListener('click', rerollDice);
+
+// Загрузка прогресса при запуске
+window.onload = function () {
+    loadProgress();
+};
+
+// Функция для загрузки прогресса
+async function loadProgress() {
+    try {
+        const response = await fetch(`${serverUrl}/get_progress/${userId}`);
+        const data = await response.json();
+        
+        level = data.level || 1;
+        score = data.score || 0;
+        rerollAttempts = data.rerollAttempts || 10;
+
+        updateUI(); // Обновляем интерфейс
+    } catch (error) {
+        console.error("Ошибка загрузки прогресса:", error);
+    }
+}
+
+// Функция для сохранения прогресса
+async function saveProgress() {
+    const data = { 
+        user_id: userId, 
+        level: level, 
+        score: score, 
+        rerollAttempts: rerollAttempts 
+    };
+
+    try {
+        const response = await fetch(`${serverUrl}/update_progress`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("Прогресс сохранён:", result);
+    } catch (error) {
+        console.error("Ошибка сохранения прогресса:", error);
+    }
+}
+
+// Функция для обновления интерфейса
+function updateUI() {
+    scoreDisplay.innerText = `Очки: ${score}`;
+    levelDisplay.innerText = `Уровень: ${level}`;
+    rerollAttemptsDisplay.innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
+}
 
 // Функция для вытягивания карты
 function drawCard() {
@@ -34,94 +99,49 @@ function rollDice() {
     // Проверяем совпадение значений и добавляем очко
     if (cardValue === diceValue) {
         score += 1; // Увеличиваем счет на 1
-        updateScore(); // Обновляем отображение счета
-
-        // Проверяем, достиг ли игрок 3 очков
         if (score === 3) {
             levelUp(); // Переход на новый уровень
         }
     }
 
-    // Деактивируем кнопку броска кубика и перекидывания
+    // Деактивируем кнопку броска кубика
     rollDiceButton.disabled = true;
     rerollDiceButton.disabled = false;
+
+    updateUI(); // Обновляем интерфейс
 }
 
 // Функция для перекидывания кубика
 function rerollDice() {
     if (rerollAttempts > 0) {
-        diceValue = Math.floor(Math.random() * 6) + 1; // Новое значение кубика
+        diceValue = Math.floor(Math.random() * 6) + 1;
         document.getElementById('dice').innerText = `Кубик: ${diceValue}`;
         rerollAttempts--;
-        rerollAttemptsDisplay.innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
 
-        // Проверяем совпадение значений и добавляем очко
         if (cardValue === diceValue) {
-            score += 1; // Увеличиваем счет на 1
-            updateScore(); // Обновляем отображение счета
-
-            // Проверяем, достиг ли игрок 3 очков
+            score += 1;
             if (score === 3) {
-                levelUp(); // Переход на новый уровень
+                levelUp();
             }
         }
 
-        // Деактивируем кнопку перекидывания, если попытки закончились
+        updateUI(); // Обновляем интерфейс
+
         if (rerollAttempts === 0) {
             rerollDiceButton.disabled = true;
         }
     }
 }
 
-// Функция для обновления счета
-function updateScore() {
-    scoreDisplay.innerText = `Очки: ${score}`;
-}
-
 // Функция для перехода на новый уровень
 function levelUp() {
-    level += 1; // Увеличиваем уровень
-    rerollAttempts = 10; // Сбрасываем количество попыток перекинуть кубик
-    rerollAttemptsDisplay.innerText = `Осталось попыток перекинуть: ${rerollAttempts}`;
-    
-    // Обновляем уровень на экране
-    levelDisplay.innerText = `Уровень: ${level}`;
-    
-    // Сбрасываем счет
+    level += 1;
     score = 0;
-    updateScore(); // Обновляем отображение счета
+    rerollAttempts = 10;
+    updateUI(); // Обновляем интерфейс
+
+    saveProgress(); // Сохраняем прогресс
 }
 
-// Сохранение прогресса при уходе со страницы
-window.addEventListener('beforeunload', function () {
-    saveProgress();
-});
-
-// Функция для сохранения прогресса
-function saveProgress() {
-    const userId = "user123"; // Уникальный идентификатор пользователя
-    const data = { user_id: userId, level: level, score: score }; // Добавляем счет в данные
-
-    fetch('/save_progress', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data));
-}
-
-// Функция для получения прогресса при загрузке страницы
-window.onload = function () {
-    const userId = "user123"; // Уникальный идентификатор пользователя
-    fetch(`/get_progress/${userId}`)
-    .then(response => response.json())
-    .then(data => {
-        level = data.level;
-        score = data.score || 0; // Устанавливаем начальное значение счета
-        levelDisplay.innerText = `Уровень: ${level}`;
-        updateScore(); // Обновляем отображение счета
-    });
-};
+// Сохранение прогресса перед уходом
+window.addEventListener('beforeunload', saveProgress);
